@@ -5,29 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="A learnable Three.js starter for byashthedesigner's driveable WebGL portfolio."
+      content="A lively Lagos-inspired driveable WebGL portfolio by byashthedesigner."
     />
-    <title>byashthedesigner® — WebGL Portfolio Starter</title>
+    <title>byashthedesigner® — Lagos Drive</title>
   </head>
   <body>
     <div id="app">
-      <canvas id="scene" aria-label="Driveable 3D portfolio scene"></canvas>
+      <canvas id="scene" aria-label="Drive a car through a Lagos-inspired 3D portfolio neighborhood"></canvas>
 
       <header class="brand">
-        <p class="eyebrow">WEBGL PORTFOLIO STARTER</p>
+        <p class="eyebrow">WELCOME TO THE MAINLAND</p>
         <h1>byashthedesigner®</h1>
+        <span>Lagos Drive / Portfolio District</span>
       </header>
 
-      <aside class="controls" aria-label="Movement controls">
-        <p>DRIVE</p>
-        <strong>WASD</strong>
-        <span>or arrow keys</span>
+      <aside class="controls" aria-label="Driving and camera controls">
+        <div class="control-group">
+          <p>DRIVE</p>
+          <strong>WASD</strong>
+          <span>or arrow keys</span>
+        </div>
+        <div class="control-divider"></div>
+        <div class="control-group">
+          <p>LOOK AROUND</p>
+          <strong>MOUSE</strong>
+          <span id="mouse-hint">Click the street to enable mouse look</span>
+        </div>
+        <div class="control-divider"></div>
+        <div class="control-group control-group--horn">
+          <p>HORN</p>
+          <strong>H</strong>
+          <span>tap for Lagos traffic</span>
+        </div>
       </aside>
+
+      <div class="sound-panel" aria-label="Sound controls">
+        <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false">
+          <span class="sound-toggle__icon" aria-hidden="true">♪</span>
+          <span id="sound-toggle-label">Start Lagos sound</span>
+        </button>
+        <span class="sound-panel__note" id="sound-note">Sound begins after your first click</span>
+      </div>
 
       <div class="status" aria-live="polite">
         <span class="status-dot"></span>
-        <span id="status-text">Explore the project stops</span>
+        <span id="status-text">Cruising Lagos · 0 km/h</span>
       </div>
+
+      <section class="project-popup" id="project-popup" aria-live="polite" aria-hidden="true">
+        <button class="project-popup__close" id="project-popup-close" type="button" aria-label="Close project details">
+          ×
+        </button>
+        <p class="project-popup__eyebrow" id="project-popup-eyebrow">PORTFOLIO STOP / LAGOS</p>
+        <h2 id="project-popup-title">Project title</h2>
+        <p id="project-popup-description">Project description</p>
+        <div class="project-popup__actions">
+          <button class="project-popup__link" id="project-popup-link" type="button">View project</button>
+          <span class="project-popup__hint" id="project-popup-hint">Drive away to explore another stop</span>
+        </div>
+      </section>
     </div>
 
     <script type="module" src="/src/main.js"></script>
