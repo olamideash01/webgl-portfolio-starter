@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+:root {
+  color: #f7f7f2;
+  font-family: Inter, system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background: #0c1021;
+}
+
+#scene {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.brand,
+.controls,
+.status {
+  position: fixed;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.brand {
+  top: 2rem;
+  left: 2rem;
+}
+
+.eyebrow,
+.controls p {
+  margin: 0 0 0.45rem;
+  color: #80ffe8;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.19em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.35rem, 3vw, 2.6rem);
+  letter-spacing: -0.06em;
+}
+
+.controls {
+  right: 2rem;
+  bottom: 2rem;
+  display: grid;
+  gap: 0.2rem;
+  min-width: 9rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: 1rem;
+  background: rgb(8 12 27 / 68%);
+  backdrop-filter: blur(14px);
+}
+
+.controls strong {
+  font-size: 1rem;
+  letter-spacing: 0.14em;
+}
+
+.controls span {
+  color: rgb(255 255 255 / 62%);
+  font-size: 0.72rem;
+}
+
+.status {
+  left: 2rem;
+  bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: rgb(255 255 255 / 72%);
+  font-size: 0.78rem;
+}
+
+.status-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: #80ffe8;
+  box-shadow: 0 0 1rem #80ffe8;
+}
+
+@media (max-width: 640px) {
+  .brand {
+    top: 1.25rem;
+    left: 1.25rem;
+  }
+
+  .controls {
+    right: 1.25rem;
+    bottom: 1.25rem;
+  }
+
+  .status {
+    right: 1.25rem;
+    bottom: 7.2rem;
+    left: auto;
+  }
+}

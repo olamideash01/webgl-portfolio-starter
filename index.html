@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A learnable Three.js starter for byashthedesigner's driveable WebGL portfolio."
+    />
+    <title>byashthedesigner® — WebGL Portfolio Starter</title>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="scene" aria-label="Driveable 3D portfolio scene"></canvas>
+
+      <header class="brand">
+        <p class="eyebrow">WEBGL PORTFOLIO STARTER</p>
+        <h1>byashthedesigner®</h1>
+      </header>
+
+      <aside class="controls" aria-label="Movement controls">
+        <p>DRIVE</p>
+        <strong>WASD</strong>
+        <span>or arrow keys</span>
+      </aside>
+
+      <div class="status" aria-live="polite">
+        <span class="status-dot"></span>
+        <span id="status-text">Explore the project stops</span>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
