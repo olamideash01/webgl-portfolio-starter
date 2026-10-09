@@ -6,12 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:pages": "VITE_BASE_PATH=/webgl-portfolio-starter/ vite build",
+    "deploy:pages": "gh-pages -d dist -b gh-pages"
   },
   "dependencies": {
     "three": "^0.178.0"
   },
   "devDependencies": {
+    "gh-pages": "^6.3.0",
     "vite": "^7.0.6"
   }
 }
