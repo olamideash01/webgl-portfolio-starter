@@ -37,6 +37,12 @@
           <strong>H</strong>
           <span>tap for Lagos traffic</span>
         </div>
+        <div class="control-divider control-divider--browse"></div>
+        <div class="control-group control-group--browse">
+          <p>PORTFOLIO</p>
+          <strong>ENTER</strong>
+          <span>browse a nearby stop</span>
+        </div>
       </aside>
 
       <div class="sound-panel" aria-label="Sound controls">
@@ -52,17 +58,20 @@
         <span id="status-text">Cruising Lagos · 0 km/h</span>
       </div>
 
-      <section class="project-popup" id="project-popup" aria-live="polite" aria-hidden="true">
+      <div class="stop-prompt" id="stop-prompt" aria-live="polite" aria-hidden="true">
+        <span class="stop-prompt__key">ENTER</span>
+        <span id="stop-prompt-label">Browse this portfolio stop</span>
+      </div>
+
+      <section class="project-popup" id="project-popup" role="dialog" aria-modal="true" aria-labelledby="project-popup-title" aria-live="polite" aria-hidden="true">
         <button class="project-popup__close" id="project-popup-close" type="button" aria-label="Close project details">
           ×
         </button>
         <p class="project-popup__eyebrow" id="project-popup-eyebrow">PORTFOLIO STOP / LAGOS</p>
         <h2 id="project-popup-title">Project title</h2>
         <p id="project-popup-description">Project description</p>
-        <div class="project-popup__actions">
-          <button class="project-popup__link" id="project-popup-link" type="button">View project</button>
-          <span class="project-popup__hint" id="project-popup-hint">Drive away to explore another stop</span>
-        </div>
+        <div class="project-popup__gallery" id="project-popup-gallery"></div>
+        <span class="project-popup__hint">Close this panel to keep driving</span>
       </section>
     </div>
 
