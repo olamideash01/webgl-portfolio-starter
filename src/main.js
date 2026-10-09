@@ -500,35 +500,56 @@ const movingTraffic = [
 const projectStops = [
   {
     category: 'BRANDING / VISUAL DESIGN',
-    name: 'Branding House',
-    description: 'Identity systems, campaign graphics, event flyers, and visual worlds created to help brands feel clear, confident, and memorable.',
+    name: 'Branding & Visual Design',
+    description: 'A selection of identity and campaign work, including K.O.T.O. brand boards and the Sacerdoge event poster.',
     position: [-25, -52],
     size: [18, 11, 13],
     color: '#d63d3d',
     sign: 'BRANDING',
+    panelImage: 'branding-koto-identity.webp',
+    panelAspect: 680 / 1420,
+    images: [
+      { title: 'K.O.T.O. Identity System', file: 'branding-koto-identity.webp', aspect: 680 / 1420, note: 'Identity directions, marks, palette and applications.' },
+      { title: 'K.O.T.O. Streetwear Campaign', file: 'branding-koto-streetwear.webp', aspect: 680 / 2100, note: 'Streetwear identity and campaign graphics.' },
+      { title: 'Sacerdoge Event Poster', file: 'branding-sacerdoge-poster.webp', aspect: 1080 / 1350, note: 'Cinematic event key art for an SFC gathering.' },
+    ],
   },
   {
     category: 'WEB / INTERACTIVE',
-    name: 'Web Studio',
-    description: 'Responsive websites, front-end builds, and interactive experiences where strong design meets thoughtful code and motion.',
+    name: 'Web Projects',
+    description: 'Three interface concepts shown in Olamide’s existing portfolio; titles are carried over from its project cards.',
     position: [25, -51],
     size: [18, 9, 13],
     color: '#e7a927',
     sign: 'WEB STUDIO',
+    panelImage: 'web-avia-dashboard.webp',
+    panelAspect: 1,
+    images: [
+      { title: 'Avia — Dashboard UI', file: 'web-avia-dashboard.webp', aspect: 1, note: 'Dashboard concept shown on the existing portfolio card.' },
+      { title: 'Inventory Tracker', file: 'web-inventory-tracker.webp', aspect: 1, note: 'Inventory management interface concept.' },
+      { title: 'E-commerce Dashboard', file: 'web-ecommerce-dashboard.webp', aspect: 1, note: 'E-commerce analytics dashboard concept.' },
+    ],
   },
   {
     category: '3D / EXPERIMENTS',
-    name: 'Experiments Lab',
-    description: 'Three.js worlds, motion studies, playful prototypes, and new visual ideas built while learning and pushing beyond familiar tools.',
+    name: '3D Experiments · In Progress',
+    description: 'I found no clear finished 3D project export in the scanned portfolio folders, so this stop is marked honestly as a work in progress.',
     position: [26, 50],
     size: [17, 12, 12],
     color: '#257c78',
     sign: '3D + EXPERIMENTS',
+    panelImage: '3d-experiments-preview.svg',
+    panelAspect: 4 / 3,
+    images: [
+      { title: '3D Experiments — Work in Progress', file: '3d-experiments-preview.svg', aspect: 4 / 3, note: 'A placeholder until finished 3D work is ready to feature.' },
+    ],
   },
 ];
 
 const stops = [];
 const beaconDots = [];
+const textureLoader = new THREE.TextureLoader();
+const portfolioAsset = (file) => `${import.meta.env.BASE_URL}artwork/${file}`;
 
 projectStops.forEach((project) => {
   const building = addBuilding({
@@ -545,7 +566,33 @@ projectStops.forEach((project) => {
   building.userData.name = project.name;
   building.userData.description = project.description;
   building.userData.category = project.category;
+  building.userData.images = project.images;
   stops.push(building);
+
+  const maxPanelWidth = 6.5;
+  const maxPanelHeight = 4.8;
+  const panelWidth = Math.min(maxPanelWidth, maxPanelHeight * project.panelAspect);
+  const panelHeight = panelWidth / project.panelAspect;
+  const panelY = Math.min(project.size[1] - panelHeight / 2 - 1.15, 7.4);
+  const panelZ = project.size[2] / 2 + 0.23;
+  const frame = new THREE.Mesh(
+    new THREE.BoxGeometry(panelWidth + 0.34, panelHeight + 0.34, 0.26),
+    new THREE.MeshStandardMaterial({ color: '#182129', metalness: 0.26, roughness: 0.58 }),
+  );
+  frame.position.set(0, panelY, panelZ - 0.08);
+  frame.castShadow = true;
+  building.add(frame);
+
+  const panelTexture = textureLoader.load(portfolioAsset(project.panelImage));
+  panelTexture.colorSpace = THREE.SRGBColorSpace;
+  panelTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  const artworkPanel = new THREE.Mesh(
+    new THREE.PlaneGeometry(panelWidth, panelHeight),
+    new THREE.MeshBasicMaterial({ map: panelTexture, toneMapped: false }),
+  );
+  artworkPanel.position.set(0, panelY, panelZ + 0.06);
+  building.add(artworkPanel);
+  if (project.position[1] > 0) building.rotation.y = Math.PI;
 
   const ring = new THREE.Mesh(
     new THREE.RingGeometry(6.2, 6.45, 48),
@@ -741,8 +788,19 @@ function collidesWithSolid(x, z) {
 
 window.addEventListener('keydown', (event) => {
   const key = event.key.toLowerCase();
+  if (key === 'enter' && !event.repeat && nearbyStop && !activeStop) {
+    event.preventDefault();
+    showProjectPopup(nearbyStop);
+    return;
+  }
+  if (key === 'escape' && activeStop) {
+    event.preventDefault();
+    hideProjectPopup();
+    return;
+  }
   if (['w', 'a', 's', 'd', 'arrowup', 'arrowleft', 'arrowdown', 'arrowright'].includes(key)) {
     event.preventDefault();
+    if (activeStop) return;
     pressedKeys.add(key);
   }
   if (key === 'h' && !event.repeat) {
@@ -895,22 +953,43 @@ const projectPopup = document.querySelector('#project-popup');
 const projectPopupEyebrow = document.querySelector('#project-popup-eyebrow');
 const projectPopupTitle = document.querySelector('#project-popup-title');
 const projectPopupDescription = document.querySelector('#project-popup-description');
+const projectPopupGallery = document.querySelector('#project-popup-gallery');
 const projectPopupClose = document.querySelector('#project-popup-close');
-const projectPopupLink = document.querySelector('#project-popup-link');
-const projectPopupHint = document.querySelector('#project-popup-hint');
+const stopPrompt = document.querySelector('#stop-prompt');
+const stopPromptLabel = document.querySelector('#stop-prompt-label');
 const stopTriggerDistance = 14;
 let activeStop = null;
-let dismissedStop = null;
+let nearbyStop = null;
 
 function showProjectPopup(stop) {
   activeStop = stop;
   projectPopupEyebrow.textContent = stop.userData.category;
   projectPopupTitle.textContent = stop.userData.name;
   projectPopupDescription.textContent = stop.userData.description;
-  projectPopupLink.textContent = 'View project';
-  projectPopupHint.textContent = 'Drive away to explore another stop';
+  projectPopupGallery.replaceChildren(...stop.userData.images.map((image) => {
+    const card = document.createElement('article');
+    card.className = 'project-card';
+    const figure = document.createElement('figure');
+    figure.className = 'project-card__image';
+    const img = document.createElement('img');
+    img.src = portfolioAsset(image.file);
+    img.alt = image.title;
+    img.loading = 'lazy';
+    figure.append(img);
+    const title = document.createElement('h3');
+    title.textContent = image.title;
+    const note = document.createElement('p');
+    note.textContent = image.note;
+    card.append(figure, title, note);
+    return card;
+  }));
   projectPopup.classList.add('is-visible');
   projectPopup.setAttribute('aria-hidden', 'false');
+  stopPrompt.classList.remove('is-visible');
+  stopPrompt.setAttribute('aria-hidden', 'true');
+  pressedKeys.clear();
+  movement.speed = 0;
+  movement.velocity.set(0, 0);
   if (document.pointerLockElement === canvas) document.exitPointerLock();
 }
 
@@ -921,13 +1000,7 @@ function hideProjectPopup() {
 }
 
 projectPopupClose.addEventListener('click', () => {
-  dismissedStop = activeStop;
   hideProjectPopup();
-});
-
-projectPopupLink.addEventListener('click', () => {
-  projectPopupLink.textContent = 'Case study coming soon';
-  projectPopupHint.textContent = 'Add the real project link in src/main.js later';
 });
 
 function updateNearestStop() {
@@ -943,19 +1016,25 @@ function updateNearestStop() {
   });
 
   const isInsideStop = nearestDistance < stopTriggerDistance;
+  nearbyStop = isInsideStop ? nearestStop : null;
   statusText.textContent = performance.now() < collisionMessageUntil
     ? 'Easy! Lagos traffic is tight here'
     : isInsideStop
-      ? `Now approaching: ${nearestStop.userData.name}`
+      ? `Portfolio stop nearby · ${nearestStop.userData.name}`
       : `Cruising Lagos · ${Math.round(Math.abs(movement.speed) * 5)} km/h`;
 
   if (!isInsideStop) {
-    dismissedStop = null;
     if (activeStop) hideProjectPopup();
-    return;
   }
 
-  if (nearestStop !== dismissedStop && nearestStop !== activeStop) showProjectPopup(nearestStop);
+  if (isInsideStop && !activeStop) {
+    stopPromptLabel.textContent = `Browse ${nearestStop.userData.name}`;
+    stopPrompt.classList.add('is-visible');
+    stopPrompt.setAttribute('aria-hidden', 'false');
+  } else {
+    stopPrompt.classList.remove('is-visible');
+    stopPrompt.setAttribute('aria-hidden', 'true');
+  }
 }
 
 const clock = new THREE.Clock();
