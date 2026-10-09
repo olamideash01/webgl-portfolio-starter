@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "build:pages": "VITE_BASE_PATH=/webgl-portfolio-starter/ vite build",
+    "build:pages": "VITE_BASE_PATH=/ vite build",
     "deploy:pages": "gh-pages -d dist -b gh-pages"
   },
   "dependencies": {

@@ -39,16 +39,18 @@ The full site lives in this GitHub repository. The local `127.0.0.1` address is 
 ### Vercel (simplest)
 
 1. Sign in to Vercel with the GitHub account that owns this repository.
-2. Choose **Add New → Project** and import `webgl-portfolio-starter`.
+2. Choose **Add New → Project** and import `olamideash01.github.io`.
 3. Keep the detected framework as **Vite**.
 4. Use `npm run build` as the build command and `dist` as the output directory.
 5. Deploy. Every later push to `main` can automatically create a new production deployment.
 
 ### GitHub Pages
 
-1. Run `npm install` and `npm run build`.
-2. Publish the generated `dist` folder with GitHub Pages or a Pages workflow.
-3. The Vite config uses relative asset paths, so the site works from the repository subfolder as well as a custom domain.
+This portfolio is published at the account root, `https://olamideash01.github.io/`.
+
+1. Install the locked dependencies with `npm ci`.
+2. Run `npm run build:pages` to build assets for the root URL.
+3. Run `npm run deploy:pages` to publish `dist` to the `gh-pages` branch.
 
 ### Show it locally
 
@@ -90,7 +92,7 @@ The current atmosphere and horns are procedural, which keeps the project fast an
 ## Project structure
 
 ```text
-webgl-portfolio-starter/
+olamideash01.github.io/
 ├── index.html       # Page structure and interface labels
 ├── vite.config.js   # Portable production asset paths
 ├── src/
